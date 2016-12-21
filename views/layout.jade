@@ -1,0 +1,102 @@
+doctype html
+html
+  head
+    title= title
+    //favicons
+    link(rel='icon', href='images/favicon/favicon-32x32.png', sizes='32x32')
+
+    //css view
+    link(href='css/materialize.css', type='text/css', rel='stylesheet', media='screen,projection')
+    link(href='css/style.css', type='text/css', rel='stylesheet', media='screen, projection')
+    link(href='font/awesome/font-awesome.min.css', type='text/css', rel='stylesheet', media='screen, projection')
+    link(href='https://fonts.googleapis.com/icon?family=Material+Icons', rel='stylesheet')
+    link(href='https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css', rel='stylesheet', type='text/css')
+
+
+
+    //included Plugin Css on this page
+    link(href='js/plugins/perfect-scrollbar/perfect-scrollbar.css', type='text/css', rel='stylesheet', media='screen,projection')
+    link(href='js/plugins/jvectormap/jquery-jvectormap.css', type='text/css', rel='stylesheet', media='screen,projection')
+  body
+    block content
+
+      //start Page Loading
+      #loader-wrapper
+        #loader
+        .loader-section.section-left
+        .loader-section.section-right
+      //end Page Loading
+
+  //jquery
+  script(type='text/javascript', src='js/jquery-1.11.2.min.js')
+  // materialize js
+  script(type='text/javascript', src='js/materialize.min.js')
+  // d3 js
+  script(type='text/javascript', src='https://d3js.org/d3.v3.min.js')
+  script(type='text/javascript', src='https://d3js.org/topojson.v1.min.js')
+  script(type='text/javascript', src='https://d3js.org/queue.v1.min.js')
+  //colorbrewer
+  script(type='text/javascript', src='js/colorbrewer.js')
+  //Map d3
+  script(type='text/javascript', src='js/d3/map.js')
+  // scrollbar
+  script(type='text/javascript', src='js/plugins/perfect-scrollbar/perfect-scrollbar.min.js')
+  // sparkline
+  script(type='text/javascript', src='js/plugins/sparkline/jquery.sparkline.min.js')
+  script(type='text/javascript', src='js/plugins/sparkline/sparkline-script.js')
+  // jvectormap
+  script(type='text/javascript', src='js/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js')
+  script(type='text/javascript', src='js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js')
+  script(type='text/javascript', src='js/plugins/jvectormap/vectormap-script.js')
+  // plugins.js - Some Specific JS codes for Plugin Settings
+  script(type='text/javascript', src='js/plugins.js')
+
+  // Toast Notification
+  script(type='text/javascript').
+    // Toast Notification
+    $(window).load(function() {
+    setTimeout(function() {
+    Materialize.toast('<span>Welcome to Mobility Atlas!</span>', 1500);
+    }, 2000);
+    /*setTimeout(function() {
+    Materialize.toast('<span>You can swipe me too!</span>', 3000);
+    }, 5500);
+    setTimeout(function() {
+    Materialize.toast('<span>You have new order.</span><a class="btn-flat yellow-text" href="#">Read<a>', 3000);
+    }, 18000);*/
+    });
+  script(type='text/javascript').
+    $(".dropdown-button").dropdown();
+
+  script(type='text/javascript').
+    function chart_init(name) {
+      //var params = getUrlParams();
+      path = "data/tuscany/comuni/"+ name;
+      var file = "data/tuscany/comuni/"+ name +"/in.tsv";
+      if( UrlExists(file) == true ){
+
+
+      /*d3.tsv(path +"/in.tsv", generateMATRIX);
+      d3.tsv(path +"/in_daily.tsv", generateSVG1);
+      d3.tsv(path +"/in_hourly.tsv", generateSVG2);
+      d3.tsv("data/comuni/Pisa/data.tsv", generateSVG3);
+      d3.csv(path +"/matrice_rg_uma_2km.csv",function(data){ generateSVG4(data,name);});*/
+      d3.csv("data/tuscany/info.csv", function(table){
+        table.forEach(function(record){
+          if (record.name == name){
+            $("#name").fadeIn('fast').text('Comune di ' + name);
+            $("#area").fadeIn('fast').html("<b>AREA</b><br> "+(record.area.slice(0,-1)) + " km<sup>2</sup>");
+            $("#population").fadeIn('fast').html("<b>POPOLAZIONE</b><br>"+(record.population));
+            $("#dock").fadeIn('fast');
+            $("#warning").fadeOut('fast');
+          }
+        });
+      });
+      }else{
+        $("#name").fadeOut('fast');
+        $("#area").fadeOut('fast');
+        $("#population").fadeOut('fast');
+        $("#dock").fadeOut('fast');
+        $("#warning").fadeIn('fast');
+        }
+      }

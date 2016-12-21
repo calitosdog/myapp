@@ -1,0 +1,99 @@
+extends layout
+
+block content
+  // Start Page Loading
+  #loader-wrapper
+    #loader
+    .loader-section.section-left
+    .loader-section.section-right
+  // End Page Loading
+
+  // START HEADER
+  header#header.page-topbar
+    .navbar-fixed
+      nav.blue.darken-4
+        .nav-wrapper
+          h1.logo-wrapper
+            a.brand-logo.darken-1(href='index.html')
+              img(src='images/materialize-logo2.png', alt='materialize logo')
+              span.logo-text Mobility Atlas
+          ul.right.hide-on-med-and-down
+            //li.search-out
+              input.search-out-text(type='text')
+            //li
+              a.waves-effect.waves-block.waves-light.show-search(href='javascript:void(0);')
+                i.mdi-action-search
+            li
+              a.waves-effect.waves-block.waves-light.toggle-fullscreen(href='javascript:void(0);')
+                i.mdi-action-settings-overscan
+            //li
+              a.waves-effect.waves-block.waves-light(href='javascript:void(0);')
+                i.mdi-social-notifications
+            // Dropdown Trigger
+            //li
+              a.waves-effect.waves-block.waves-light.chat-collapse(href='#', data-activates='chat-out')
+                i.mdi-communication-chat
+  //Main Section
+  #main
+    //Wrapper Start
+    .wrapper
+      //Start Content
+      #content
+        //Start Container
+        .container
+          //chart dashboard Start
+          #chart-dashboard
+            .row
+              h5.center UMA - Urban Mobility Atlas Dashboard
+              .col.s12.m4.l8
+            .divider
+          #flows-map.box.box-danger.flows-map
+
+            // Dropdown Structure
+            ul#dropdown1.dropdown-content
+              li
+                a(href='#!') one
+              li
+                a(href='#!') two
+              li
+                a(href='#!') three
+              li.divider
+              li
+                a(href='#!') Four
+            nav
+              .nav-wrapper
+                a.brand-logo(href='#!')
+                  |OD Matrix Map
+                ul.right.hide-on-med-and-down
+                  li
+                    a(href='sass.html') Week 1
+                  li
+                    a(href='badges.html') Week 2
+                  li
+                    a(href='collapsible.html') Week 3
+                  li
+                    a(href='mobile.html') Week 4
+                  li
+                    a.dropdown-button(href='#!', data-activates='dropdown1')
+                      | Dropdown
+                      i.material-icons.right arrow_drop_down
+            //.box-header.with-border
+              h6.box-title OD Matrix Map
+            .box-body
+              #flow-viz(style='height:720px')
+                #leftBlock.comuneInfo(style='position:absolute; top: 10%; left:3%; ')
+                  #name.white-box
+                #rightBlock.comuneInfo(style='position:absolute; right:3%; top:10%;')
+                  #area.white-box
+                  #population.white-box
+                #leftBlockp.provinciaInfo(style=' position:absolute; top: 10%; left:3%; ')
+                  #namep.white-box
+                #rightBlockp.provinciaInfo(style=' position:absolute; right:3%; top:10%;')
+                  #areap.white-box
+                  #populationp.white-box
+                  #densityp.white-box
+                  #ncomuni.white-box
+              // /.box-body
+            .box-footer| Flows of traffic exiting from the city.
+            // /.box-footer
+            // /.box

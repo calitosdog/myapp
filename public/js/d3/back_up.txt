@@ -1,0 +1,126 @@
+var compareName = undefined;
+(function() {
+
+  $(function() {
+    var centered, color_scale, italy, path_generator, projection, svg, zoom_to,selected;
+	  color = d3.scale.category20();
+    heat_color = d3.scale.linear().domain([0, 1]).range(['#b2df8a', '#ff7f00']).interpolate(d3.interpolateHcl);
+    svg = d3.select('#flow-viz').append('svg').attr('width', '100%').attr('height', '100%').attr('viewBox', '-45 -40 100 100').style("background-color", "transparent");
+    projection = d3.geo.albers().center([13.5, 36]).rotate([-14, 0]).parallels([38, 61]).scale(2100);
+    path_generator = d3.geo.path().projection(projection);
+    italy = svg.append('g').attr('class', 'italy');
+    color_scale = d3.scale
+      .category20b();
+    selected = d3.set([
+       45001, 48001, 45002, 43001, 100001, 53011
+    ]);
+   var file = 'data/weekdays0.json';
+   var mydata = JSON.toString(file);
+   console.log(mydata);
+
+    centered = null;
+    zoom_to = function(d) {
+      var centroid, level, x, y, zoom;
+      level = d === centered ? 'zoom_italy' : d.properties.NOME_REG != null ? 'zoom_regione' : d.properties.NOME_PRO != null ? 'zoom_provincia' : 'zoom_comune';
+      if (level !== 'zoom_italy') {
+        centroid = path_generator.centroid(d);
+        x = centroid[0];
+        y = centroid[1];
+        zoom = (function() {
+          switch (level) {
+            case 'zoom_regione':
+			$("#informationsContexte").fadeOut();
+              return 1.5;
+            case 'zoom_provincia':
+				/*chart_init_p(d.properties.NOME_PRO);*/
+				$(".provinciaInfo").fadeIn();
+				$("#informationsContexte").fadeOut();
+              return 2.5;
+            case 'zoom_comune':
+				/*chart_init(d.properties.NOME_COM);*/
+				$("#overlay").fadeIn("fast");
+				$(".comuneInfo").fadeIn();
+				$(".provinciaInfo").fadeOut();
+				$("#informationsContexte").fadeOut();
+				return 9;
+          }
+        })();
+        centered = d;
+      } else {
+		$("#overlay").fadeOut("fast");$(".comuneInfo").fadeOut();$("#warning").fadeOut();
+		$("#informationsContexte").fadeIn();
+        x = 0;
+        y = 0;
+        zoom = 1;
+        centered = null;
+      }
+
+
+      italy.attr('class', level);
+      italy.selectAll('.regione, .provincia, .comune').classed('active', function(d) {
+        return d === centered;
+      });
+      return italy.transition().duration(750).attr('transform', 'scale(' + zoom + ')translate(' + -x + ',' + -y + ')');
+    };
+
+
+    return d3.json('data/map/toscana2011_g.topo.json', function(error, data) {
+      var comuni, province, regioni;
+      /*regioni = topojson.feature(data, data.objects.toscana_reg2011_g);
+      province = topojson.feature(data, data.objects.toscana_prov2011_g);*/
+      comuni = topojson.feature(data, data.objects.toscana_com2011_g);
+      console.log(data.objects.toscana_com2011_g);
+	    neighbors = topojson.neighbors(data.objects.toscana_com2011_g.geometries);
+      selezionato = topojson.merge(data, data.objects.toscana_com2011_g.geometries.filter(function(d) { console.log(d.properties.COD_PRO); return selected.has(d.properties.PRO_COM);  }));
+      italy.selectAll('.comune').data(comuni.features).enter().append('path').attr('class', 'comune').attr('d', path_generator).attr('fill','#aaa')
+		    .on('click', zoom_to).append('title').text(function(d) {
+          return d.properties.NOME_COM;
+      });
+      /*d3.json('data/weekdays0.json', function(error, track) {
+        	if (error) throw error;
+          track.forEach(function(c) {
+        svg.append('path').datum(selezionato).attr('d', path_generator).attr('class','ciao').attr('fill', function(c) { return heat_color(c.id.split(':')[0]) });
+        console.log(track);
+      });
+    });*/
+      /*italy.selectAll('.comune').append("path_generator")
+        .data(topojson.merge(data, .filter(function(d) { return selected.has(45); })))
+        .attr("fill", "orange")
+        .attr("d", path_generator);
+        console.log(selected);*/
+
+      //Delay
+      queue()
+        	.defer(d3.json, "data/weekdays0.json")
+          .await(ready);
+      //function  to load points
+      function ready(error, track) {
+      	if (error) throw error;
+        track.forEach(function(d) {
+      	   //st_x = +d.lng,
+      		 //st_y = +d.lat,
+           var cod_comune = []
+           cod_comune  = +d.section.com,
+      	   //a = parseInt(d.id.split(':')[0]) * 10 + parseInt(d.id.split(':')[1]),
+      		 //test = color_scale(a);
+      		 //console.log(a + "_" +test)
+      		   //coordinates = projection([d.lng, d.lat]);
+      			    //italy.append('svg:circle')
+      				      //.attr('cx', coordinates[0])
+            				//.attr('cy', coordinates[1])
+            				//.attr('r', 0.3 )
+            				//.style("fill", heat_color((d.id.split(':')[0])));
+                    //svg.append('path').datum(selezionato).attr('d', path_generator).attr('class','ciao').attr('fill', function(c) { console.log(d.id.split(':')[0]); return heat_color((d.id.split(':')[0])) });
+      	console.log(cod_comune);
+      	});
+      }
+      /*italy.selectAll('.provincia').data(province.features).enter().append('path').attr('class', 'provincia').attr('d', path_generator).on('click', zoom_to).append('title').text(function(d) {
+        return d.properties.NOME_PRO;
+      });
+      return italy.selectAll('.regione').data(regioni.features).enter().append('path').attr('class', 'regione').attr('d', path_generator).on('click', zoom_to).append('title').text(function(d) {
+        return d.properties.NOME_REG;
+      });*/
+    });
+  });
+
+}).call(this);
