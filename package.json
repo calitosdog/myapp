@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node ./bin/www",
     "compile": "grunt compiler",
-	"fullCompile": "grunt --stack fullCompile"
+	"fullCompile": "grunt --stack fullCompile",
+	"fullCompileSezioni": "grunt --stack fullCompileSezioni"
   },
   "dependencies": {
     "async": "^2.0.1",

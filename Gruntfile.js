@@ -11,7 +11,7 @@ const DIRECTORY = './resources/filetree';
 
 //function that receives the filename
 //Key prov_com_sez && value lat log
-function fileCompiler(filename, csvMap, callback) {
+/*function fileCompiler(filename, csvMap, callback) {
 	grunt.log.writeln('on '+filename+' task started');
 	var instream = fs.createReadStream(DIRECTORY+'/'+filename, {encoding:'utf8', bufferSize: 1, fd: null, flags: 'r'});
 	var result = [];
@@ -56,10 +56,10 @@ function fileCompiler(filename, csvMap, callback) {
 			callback();
 		});
 	});
-}
+}*/
 
 //register task
-grunt.registerTask('compiler', 'converts file tree into json.', function() {
+/*grunt.registerTask('compiler', 'converts file tree into json.', function() {
 	grunt.log.writeln("task started");
 	var done = this.async();
 	fs.readdir(DIRECTORY, (err, files) => {
@@ -85,13 +85,20 @@ grunt.registerTask('compiler', 'converts file tree into json.', function() {
 			});
 		});
 	});
-});
+});*/
 
 grunt.initConfig({
 	fullCompile: {
 		options: {
 			treeDirectoryPath: './resources/filetree',
 			geometryFile: './public/data/map/toscana_com2011_g.json',
+			outputDirectory: './public/dataCompiled'
+		}
+	},
+	fullCompileSezioni: {
+		options: {
+			treeDirectoryPath: './resources/filetree',
+			geometryFile: './resources/seza.geojson',
 			outputDirectory: './public/dataCompiled'
 		}
 	}
