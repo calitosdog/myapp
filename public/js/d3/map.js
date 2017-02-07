@@ -95,7 +95,7 @@ var compareName = undefined;
 			 * MODIFICHE SERGIO
 			 */
 			//Delay
-			queue().defer(d3.json, "data/weekdays0.json").await(ready);
+			queue().defer(d3.json, "data/weekdays1.json").await(ready);
 			//function that loads json and extracts all the comuni into array
 			function ready(error, track) {
 				// associate Color -> list of comuni
@@ -135,7 +135,8 @@ var compareName = undefined;
 					svg.append('path').datum(merged)
 					.attr('d', path_generator)
 					.attr('class','ciao')
-					.attr('fill', color);
+					.attr('fill', color)
+					.style('opacity',.7);
 
           console.log(selected.comuniSelected)
 				});

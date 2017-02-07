@@ -5,8 +5,9 @@
   "scripts": {
     "start": "node ./bin/www",
     "compile": "grunt compiler",
-	"fullCompile": "grunt --stack fullCompile",
-	"fullCompileSezioni": "grunt --stack fullCompileSezioni"
+    "fullCompile": "grunt --stack fullCompile",
+    "fullCompileSezioni": "grunt --stack fullCompileSezioni",
+    "mergeSezioni": "grunt --stack mergeSezioni"
   },
   "dependencies": {
     "async": "^2.0.1",
@@ -19,7 +20,8 @@
     "googleapis": "^14.1.0",
     "jade": "~1.11.0",
     "morgan": "~1.7.0",
-    "serve-favicon": "~2.3.0"
+    "serve-favicon": "~2.3.0",
+    "topojson": "^2.2.0"
   },
   "devDependencies": {
     "grunt": "^1.0.1"

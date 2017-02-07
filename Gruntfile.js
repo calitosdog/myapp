@@ -98,10 +98,18 @@ grunt.initConfig({
 	fullCompileSezioni: {
 		options: {
 			treeDirectoryPath: './resources/filetree',
-			geometryFile: './resources/seza.geojson',
+			geometryFile: './resources/sez.geojson',
+			outputDirectory: './public/dataCompiled'
+		}
+	},
+	mergeSezioni: {
+		options: {
+			treeDirectoryPath: './resources/filetree',
+			geometryFile: './resources/R09_01_WGS84.json',
 			outputDirectory: './public/dataCompiled'
 		}
 	}
 });
 
 grunt.loadTasks('tasks');
+grunt.option('stack', true);

@@ -58,6 +58,9 @@ class TreeFileProcessor{
 			const sezioniKey = sectionFields[0] + padding(sectionFields[1], 3, '0') + '_' + sectionFields[2];
 			//console.log('sezioniKey: '+sezioniKey);
 			const sezione = this.sezioniMap.get(sezioniKey);
+			if(!sezione){
+        console.error(sezioniKey+' > sezione per il record : '+line);
+      }
 			const record = {
 				id: fields[0],
 				levelKeys: [],
@@ -196,7 +199,10 @@ module.exports = function(grunt) {
 				processor.process().then(function(){
 					const promise1 = processor.clusterize(2, 15).then(function(data){ return processor.writeFile(outputDirectory, 'sez_level_2', data); });
 					const promise2 = processor.clusterize(3, 15).then(function(data){ return processor.writeFile(outputDirectory, 'sez_level_3', data); });
-					return Promise.all([promise1, promise2]);
+					const promise3 = processor.clusterize(0, 15).then(function(data){ return processor.writeFile(outputDirectory, 'sez_level_1', data); });
+					//const promise4 = processor.clusterize(4, 15).then(function(data){ return processor.writeFile(outputDirectory, 'sez_level_4', data); });
+					//const promise5 = processor.clusterize(5, 15).then(function(data){ return processor.writeFile(outputDirectory, 'sez_level_5', data); });
+					return Promise.all([promise1, promise2, promise3]);
 				}).then(function(){
 					console.log('Complete');
 				}, function(err){

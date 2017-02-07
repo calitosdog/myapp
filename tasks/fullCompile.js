@@ -117,6 +117,7 @@ class TreeFileProcessor{
 					clusters.set(clusterKey, {
 						key: clusterKey,
 						recordCount: 1,
+						levelKeys: record.levelKeys,
 						comuni: comuni
 					});
 				}
@@ -188,7 +189,8 @@ module.exports = function(grunt) {
 				processor.process().then(function(){
 					const promise1 = processor.clusterize(3, 15).then(function(data){ return processor.writeFile(outputDirectory, 'level_3', data); });
 					const promise2 = processor.clusterize(2, 15).then(function(data){ return processor.writeFile(outputDirectory, 'level_2', data); });
-					return Promise.all([promise1, promise2]);
+					const promise3 = processor.clusterize(0, 15).then(function(data){ return processor.writeFile(outputDirectory, 'level_1', data); });
+					return Promise.all([,promise1, promise2, promise3]);
 				}).then(function(){
 					console.log('Complete');
 				}, function(err){
